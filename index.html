@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>China Value Factor Models — Live Dashboard</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div>
+      <h1>China Value Factor Models</h1>
+      <p class="subtitle">Live tracking of CH-3, CH-4 and Eight-Factor long-short portfolios on China A-shares</p>
+    </div>
+    <div class="header-meta">
+      <div>Latest market data <strong id="meta-latest-date">2026-07-21</strong></div>
+      <div>Site generated <span id="meta-generated">2026-07-21 20:00:24</span></div>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="ch3" role="tab">CH-3</button>
+    <button class="tab" data-tab="ch4" role="tab">CH-4</button>
+    <button class="tab" data-tab="eight" role="tab">Eight-Factor</button>
+    <button class="tab" data-tab="longonly" role="tab">Long-Only Live</button>
+  </nav>
+</header>
+
+<main>
+
+
+
+
+<section class="tab-panel active" id="panel-ch3">
+
+  <div class="card intro-card">
+    <h2>CH-3 — China Three-Factor Model</h2>
+    <p>Replication of the three-factor model from Liu, Stambaugh and Yuan's <em>Size and Value in China</em>: a market factor (MKT), a size factor (SMB), and a value factor VMG (value-minus-growth) built on the earnings-to-price ratio — the paper's key finding being that EP beats book-to-market as the value signal in the A-share market. Portfolios are formed on the last trading day of each month using 2×3 double sorts on size (median split) and EP (30/40/30), value-weighted within each cell. The live model holds SMB and VMG in equal weight as a long-short portfolio, matching the backtest strategy <code>Factor_CH3_Equal_SMB_VMG</code>. The investable sample excludes the bottom 30% of stocks by market cap (the paper's shell-value filter).</p>
+  </div>
+
+  <h3 class="section-title">Key ratios</h3>
+  <div class="stat-row" id="ch3-stat-row"></div>
+
+  <div class="chart-grid">
+    <div class="card chart-card">
+      <h4>Live NAV <span class="hint">daily, since first 2026 rebalance, net of 20 bps costs</span></h4>
+      <div class="chart-box"><canvas id="ch3-chart-live-nav"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Live drawdown</h4>
+      <div class="chart-box"><canvas id="ch3-chart-live-dd"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Historical backtest NAV <span class="hint">monthly, 2000–2025, log scale</span></h4>
+      <div class="chart-box"><canvas id="ch3-chart-hist-nav"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Monthly returns <span class="hint">last 24 months; hatched = live, light = current partial month</span></h4>
+      <div class="chart-box"><canvas id="ch3-chart-monthly"></canvas></div>
+    </div>
+    <div class="card chart-card wide">
+      <h4>Annual returns <span class="hint">2000–2025 backtest; 2026 live year-to-date</span></h4>
+      <div class="chart-box"><canvas id="ch3-chart-annual"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Factor returns, latest month <span class="hint">live long-short legs</span></h4>
+      <div class="chart-box"><canvas id="ch3-chart-factor-month"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Rebalance turnover</h4>
+      <div class="chart-box"><canvas id="ch3-chart-turnover"></canvas></div>
+    </div>
+  </div>
+
+  <h3 class="section-title">Current holdings <span class="hint" id="ch3-holdings-meta"></span></h3>
+  <div class="two-col">
+    <div class="card">
+      <h4 class="long-label">Top long positions</h4>
+      <table class="data-table" id="ch3-table-long"></table>
+    </div>
+    <div class="card">
+      <h4 class="short-label">Top short positions</h4>
+      <table class="data-table" id="ch3-table-short"></table>
+    </div>
+  </div>
+
+  <h3 class="section-title">Latest rebalance</h3>
+  <div class="card" id="ch3-changes-summary"></div>
+  <div class="two-col">
+    <div class="card">
+      <h4>Largest weight increases</h4>
+      <table class="data-table" id="ch3-table-adds"></table>
+    </div>
+    <div class="card">
+      <h4>Largest weight decreases</h4>
+      <table class="data-table" id="ch3-table-drops"></table>
+    </div>
+  </div>
+
+  <h3 class="section-title">Factor information</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>Factor summary</h4>
+      <table class="data-table" id="ch3-table-factors"></table>
+    </div>
+    <div class="card">
+      <h4>Historical factor correlation <span class="hint">monthly, 2000–2025</span></h4>
+      <table class="data-table corr-table" id="ch3-table-corr"></table>
+    </div>
+  </div>
+
+  <div class="card note-card">
+    <h4>Methodology notes</h4>
+    <ul>
+      <li>Rebalanced on the last trading day of each month; new weights take effect the next trading day.</li>
+      <li>Long-short factor portfolios, value-weighted within each 2×3 cell; live NAV holds weights fixed between rebalances.</li>
+      <li>Model NAV is net of 20 bps one-way transaction costs applied to turnover at each rebalance; factor return series are gross.</li>
+      <li>Live daily tracking and the monthly backtest use different compounding conventions — the two NAV charts are shown separately and are not stitched.</li>
+      <li>Sample: main-board A-shares, listed ≥ 6 months, bottom 30% by market cap excluded (<code>without_bottom30</code>).</li>
+    </ul>
+  </div>
+
+</section>
+
+<section class="tab-panel " id="panel-ch4">
+
+  <div class="card intro-card">
+    <h2>CH-4 — Three Factors plus Turnover Sentiment</h2>
+    <p>CH-4 extends CH-3 with a sentiment factor PMO (pessimistic-minus-optimistic) designed for the retail-dominated A-share market. Stocks are ranked each month on <em>abnormal turnover</em> — the 21-day average turnover divided by the 252-day average. Low-abnormal-turnover ("pessimistic") stocks are bought and high-abnormal-turnover ("optimistic") stocks are shorted, again through a size-neutral 2×3 sort. The live model holds SMB, VMG and PMO in equal weight, matching the backtest strategy <code>Factor_CH4_Equal_SMB_VMG_PMO</code>.</p>
+  </div>
+
+  <h3 class="section-title">Key ratios</h3>
+  <div class="stat-row" id="ch4-stat-row"></div>
+
+  <div class="chart-grid">
+    <div class="card chart-card">
+      <h4>Live NAV <span class="hint">daily, since first 2026 rebalance, net of 20 bps costs</span></h4>
+      <div class="chart-box"><canvas id="ch4-chart-live-nav"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Live drawdown</h4>
+      <div class="chart-box"><canvas id="ch4-chart-live-dd"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Historical backtest NAV <span class="hint">monthly, 2000–2025, log scale</span></h4>
+      <div class="chart-box"><canvas id="ch4-chart-hist-nav"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Monthly returns <span class="hint">last 24 months; hatched = live, light = current partial month</span></h4>
+      <div class="chart-box"><canvas id="ch4-chart-monthly"></canvas></div>
+    </div>
+    <div class="card chart-card wide">
+      <h4>Annual returns <span class="hint">2000–2025 backtest; 2026 live year-to-date</span></h4>
+      <div class="chart-box"><canvas id="ch4-chart-annual"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Factor returns, latest month <span class="hint">live long-short legs</span></h4>
+      <div class="chart-box"><canvas id="ch4-chart-factor-month"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Rebalance turnover</h4>
+      <div class="chart-box"><canvas id="ch4-chart-turnover"></canvas></div>
+    </div>
+  </div>
+
+  <h3 class="section-title">Current holdings <span class="hint" id="ch4-holdings-meta"></span></h3>
+  <div class="two-col">
+    <div class="card">
+      <h4 class="long-label">Top long positions</h4>
+      <table class="data-table" id="ch4-table-long"></table>
+    </div>
+    <div class="card">
+      <h4 class="short-label">Top short positions</h4>
+      <table class="data-table" id="ch4-table-short"></table>
+    </div>
+  </div>
+
+  <h3 class="section-title">Latest rebalance</h3>
+  <div class="card" id="ch4-changes-summary"></div>
+  <div class="two-col">
+    <div class="card">
+      <h4>Largest weight increases</h4>
+      <table class="data-table" id="ch4-table-adds"></table>
+    </div>
+    <div class="card">
+      <h4>Largest weight decreases</h4>
+      <table class="data-table" id="ch4-table-drops"></table>
+    </div>
+  </div>
+
+  <h3 class="section-title">Factor information</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>Factor summary</h4>
+      <table class="data-table" id="ch4-table-factors"></table>
+    </div>
+    <div class="card">
+      <h4>Historical factor correlation <span class="hint">monthly, 2000–2025</span></h4>
+      <table class="data-table corr-table" id="ch4-table-corr"></table>
+    </div>
+  </div>
+
+  <div class="card note-card">
+    <h4>Methodology notes</h4>
+    <ul>
+      <li>Rebalanced on the last trading day of each month; new weights take effect the next trading day.</li>
+      <li>Long-short factor portfolios, value-weighted within each 2×3 cell; live NAV holds weights fixed between rebalances.</li>
+      <li>Model NAV is net of 20 bps one-way transaction costs applied to turnover at each rebalance; factor return series are gross.</li>
+      <li>Live daily tracking and the monthly backtest use different compounding conventions — the two NAV charts are shown separately and are not stitched.</li>
+      <li>Sample: main-board A-shares, listed ≥ 6 months, bottom 30% by market cap excluded (<code>without_bottom30</code>).</li>
+    </ul>
+  </div>
+
+</section>
+
+<section class="tab-panel " id="panel-eight">
+
+  <div class="card intro-card">
+    <h2>Eight-Factor — Extended Multi-Factor Model</h2>
+    <p>An extended framework layering momentum, liquidity and default risk on top of a Fama-French-five-style core, with value measured by EP to stay consistent with the China evidence: MKT, SMB (FF-2015 style — the average of six size spreads, one per characteristic sort), HML_EP (value), RMW (profitability, ROE), CMA (investment, low-minus-high YoY asset growth), MOM (12-month momentum excluding the latest month), LIQ (low-minus-high turnover) and DR (default risk, high-minus-low leverage). A COMPOSITE factor z-scores the six characteristics into one signal. The live model trades the COMPOSITE long-short; individual factors are tracked alongside.</p>
+  </div>
+
+  <h3 class="section-title">Key ratios</h3>
+  <div class="stat-row" id="eight-stat-row"></div>
+
+  <div class="chart-grid">
+    <div class="card chart-card">
+      <h4>Live NAV <span class="hint">daily, since first 2026 rebalance, net of 20 bps costs</span></h4>
+      <div class="chart-box"><canvas id="eight-chart-live-nav"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Live drawdown</h4>
+      <div class="chart-box"><canvas id="eight-chart-live-dd"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Historical backtest NAV <span class="hint">monthly, 2000–2025, log scale</span></h4>
+      <div class="chart-box"><canvas id="eight-chart-hist-nav"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Monthly returns <span class="hint">last 24 months; hatched = live, light = current partial month</span></h4>
+      <div class="chart-box"><canvas id="eight-chart-monthly"></canvas></div>
+    </div>
+    <div class="card chart-card wide">
+      <h4>Annual returns <span class="hint">2000–2025 backtest; 2026 live year-to-date</span></h4>
+      <div class="chart-box"><canvas id="eight-chart-annual"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Factor returns, latest month <span class="hint">live long-short legs</span></h4>
+      <div class="chart-box"><canvas id="eight-chart-factor-month"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Rebalance turnover</h4>
+      <div class="chart-box"><canvas id="eight-chart-turnover"></canvas></div>
+    </div>
+  </div>
+
+  <h3 class="section-title">Current holdings <span class="hint" id="eight-holdings-meta"></span></h3>
+  <div class="two-col">
+    <div class="card">
+      <h4 class="long-label">Top long positions</h4>
+      <table class="data-table" id="eight-table-long"></table>
+    </div>
+    <div class="card">
+      <h4 class="short-label">Top short positions</h4>
+      <table class="data-table" id="eight-table-short"></table>
+    </div>
+  </div>
+
+  <h3 class="section-title">Latest rebalance</h3>
+  <div class="card" id="eight-changes-summary"></div>
+  <div class="two-col">
+    <div class="card">
+      <h4>Largest weight increases</h4>
+      <table class="data-table" id="eight-table-adds"></table>
+    </div>
+    <div class="card">
+      <h4>Largest weight decreases</h4>
+      <table class="data-table" id="eight-table-drops"></table>
+    </div>
+  </div>
+
+  <h3 class="section-title">Factor information</h3>
+  <div class="two-col">
+    <div class="card">
+      <h4>Factor summary</h4>
+      <table class="data-table" id="eight-table-factors"></table>
+    </div>
+    <div class="card">
+      <h4>Historical factor correlation <span class="hint">monthly, 2000–2025</span></h4>
+      <table class="data-table corr-table" id="eight-table-corr"></table>
+    </div>
+  </div>
+
+  <div class="card note-card">
+    <h4>Methodology notes</h4>
+    <ul>
+      <li>Rebalanced on the last trading day of each month; new weights take effect the next trading day.</li>
+      <li>Long-short factor portfolios, value-weighted within each 2×3 cell; live NAV holds weights fixed between rebalances.</li>
+      <li>Model NAV is net of 20 bps one-way transaction costs applied to turnover at each rebalance; factor return series are gross.</li>
+      <li>Live daily tracking and the monthly backtest use different compounding conventions — the two NAV charts are shown separately and are not stitched.</li>
+      <li>Sample: main-board A-shares, listed ≥ 6 months, bottom 30% by market cap excluded (<code>without_bottom30</code>).</li>
+    </ul>
+  </div>
+
+</section>
+
+
+<section class="tab-panel" id="panel-longonly">
+  <div class="card intro-card">
+    <h2>Long-Only Live Strategies</h2>
+    <p>Four investable long-only portfolios tracked since May 2026, complementing the long-short factor models: <strong>EP Top 30%</strong> buys stocks in the top three EP deciles; <strong>MultiFactor Top 20%</strong> ranks stocks on a composite of EP, small size and low abnormal turnover and buys the top quintile. Each comes in an equal-weighted (EW) and a value-weighted (VW) version, rebalanced monthly with 20 bps one-way costs.</p>
+  </div>
+  <div class="chart-grid">
+    <div class="card chart-card wide">
+      <h4>Live NAV</h4>
+      <div class="chart-box tall"><canvas id="longonly-chart-nav"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <h4>Live statistics</h4>
+    <table class="data-table" id="longonly-table-stats"></table>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <p>Research dashboard for the <em>Trove China Value</em> project — reproduction and live tracking of size, value, turnover and extended factors on China A-shares. Data: TuShare Pro. Long-short factor portfolios are research constructs, not investment advice.</p>
+</footer>
+
+<script src="assets/chart.umd.js"></script>
+<script src="data/dashboard_data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

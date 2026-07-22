@@ -1,0 +1,5 @@
+# 只发布浏览器需要的静态文件；数据库是本地生成用的中间文件，不上传
+data/trove_web.db
+data/*.db
+*.tmp
+.DS_Store
