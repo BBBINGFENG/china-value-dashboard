@@ -343,6 +343,24 @@
         { html: num(f.hist_sharpe) },
       ]));
 
+    // 显著性 t-stat 表
+    if (m.significance && m.significance.length) {
+      const tcell = (t, s) =>
+        t === null || t === undefined
+          ? { html: "–" }
+          : { html: `${t.toFixed(2)}<sup>${s || ""}</sup>`, cls: Math.abs(t) >= 1.96 ? "" : "muted-cell" };
+      fillTable(`${key}-table-significance`,
+        ["Factor", "", "Full t", "In-sample t", "Out-sample t", "α vs model t"],
+        m.significance.map((r) => [
+          { html: r.factor },
+          { html: "" },
+          tcell(r.t_full, r.s_full),
+          tcell(r.t_in, r.s_in),
+          tcell(r.t_out, r.s_out),
+          tcell(r.t_alpha, r.s_alpha),
+        ]));
+    }
+
     // 相关系数矩阵
     if (m.correlation && m.correlation.factors.length) {
       const { factors, matrix } = m.correlation;
@@ -371,11 +389,13 @@
 
   /* ---------- long-only ---------- */
 
+  const loLabel = (n) => n.replace("Live_", "").replace(/_/g, " ");
+
   function renderLongOnly() {
     const lo = DATA.longonly;
     const names = Object.keys(lo.strategies);
     if (names.length) {
-      const colors = [css("--accent"), css("--accent-2"), css("--accent-3"), css("--accent-4")];
+      const colors = [css("--accent"), css("--accent-2"), css("--accent-3"), css("--accent-4"), css("--accent-5")];
       // 用最长的日期轴
       let labels = [];
       names.forEach((n) => {
@@ -385,7 +405,7 @@
         const s = lo.strategies[n];
         const byDate = Object.fromEntries(s.dates.map((d, k) => [d, s.nav[k]]));
         return Object.assign(
-          { label: n.replace("Live_", ""), data: labels.map((d) => byDate[d] ?? null), spanGaps: true },
+          { label: loLabel(n), data: labels.map((d) => byDate[d] ?? null), spanGaps: true },
           lineStyle(colors[i % colors.length])
         );
       });
@@ -396,7 +416,7 @@
     fillTable("longonly-table-stats",
       ["Strategy", "", "Total return", "Ann. vol", "Max drawdown", "Days"],
       lo.stats.map((s) => [
-        { html: s.strategy.replace("Live_", "") },
+        { html: loLabel(s.strategy) },
         { html: "" },
         { html: pct(s.total_return), cls: signClass(s.total_return) },
         { html: pct(s.ann_vol) },

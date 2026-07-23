@@ -16,7 +16,7 @@
     </div>
     <div class="header-meta">
       <div>Latest market data <strong id="meta-latest-date">2026-07-22</strong></div>
-      <div>Site generated <span id="meta-generated">2026-07-22 20:02:38</span></div>
+      <div>Site generated <span id="meta-generated">2026-07-23 14:26:25</span></div>
     </div>
   </div>
   <nav class="tabs" role="tablist">
@@ -110,6 +110,14 @@
     </div>
   </div>
 
+  <div class="card">
+    <h4>Return significance — Newey-West t-stats
+      <span class="hint">2000–2025 backtest; *** 1% · ** 5% · * 10% · |t|≥1.96 ≈ 5%</span>
+    </h4>
+    <p class="table-note">Each factor's monthly-return t-stat (HAC/Newey-West), split into full sample, in-sample (2000–2016, the paper's era) and out-of-sample (2017–2025). The last column is the spanning-test alpha t-stat: the factor regressed on the model's other factors — a significant α means it is not explained by them.</p>
+    <table class="data-table" id="ch3-table-significance"></table>
+  </div>
+
   <div class="card note-card">
     <h4>Methodology notes</h4>
     <ul>
@@ -199,6 +207,14 @@
       <h4>Historical factor correlation <span class="hint">monthly, 2000–2025</span></h4>
       <table class="data-table corr-table" id="ch4-table-corr"></table>
     </div>
+  </div>
+
+  <div class="card">
+    <h4>Return significance — Newey-West t-stats
+      <span class="hint">2000–2025 backtest; *** 1% · ** 5% · * 10% · |t|≥1.96 ≈ 5%</span>
+    </h4>
+    <p class="table-note">Each factor's monthly-return t-stat (HAC/Newey-West), split into full sample, in-sample (2000–2016, the paper's era) and out-of-sample (2017–2025). The last column is the spanning-test alpha t-stat: the factor regressed on the model's other factors — a significant α means it is not explained by them.</p>
+    <table class="data-table" id="ch4-table-significance"></table>
   </div>
 
   <div class="card note-card">
@@ -292,6 +308,14 @@
     </div>
   </div>
 
+  <div class="card">
+    <h4>Return significance — Newey-West t-stats
+      <span class="hint">2000–2025 backtest; *** 1% · ** 5% · * 10% · |t|≥1.96 ≈ 5%</span>
+    </h4>
+    <p class="table-note">Each factor's monthly-return t-stat (HAC/Newey-West), split into full sample, in-sample (2000–2016, the paper's era) and out-of-sample (2017–2025). The last column is the spanning-test alpha t-stat: the factor regressed on the model's other factors — a significant α means it is not explained by them.</p>
+    <table class="data-table" id="eight-table-significance"></table>
+  </div>
+
   <div class="card note-card">
     <h4>Methodology notes</h4>
     <ul>
@@ -309,7 +333,7 @@
 <section class="tab-panel" id="panel-longonly">
   <div class="card intro-card">
     <h2>Long-Only Live Strategies</h2>
-    <p>Four investable long-only portfolios tracked since May 2026, complementing the long-short factor models: <strong>EP Top 30%</strong> buys stocks in the top three EP deciles; <strong>MultiFactor Top 20%</strong> ranks stocks on a composite of EP, small size and low abnormal turnover and buys the top quintile. Each comes in an equal-weighted (EW) and a value-weighted (VW) version, rebalanced monthly with 20 bps one-way costs.</p>
+    <p>Investable long-only portfolios tracked live, complementing the long-short factor models. <strong>EP Top 30%</strong> buys stocks in the top three EP deciles; <strong>MultiFactor Top 20%</strong> ranks stocks on a composite of EP, small size and low abnormal turnover and buys the top quintile — each in an equal-weighted (EW) and value-weighted (VW) version. <strong>LIQ Long-Only (VW)</strong> holds only the long leg of the liquidity factor — the lowest-turnover (least liquid) stocks, size-neutral and value-weighted — to capture the illiquidity premium without shorting. All rebalanced monthly with 20 bps one-way costs.</p>
   </div>
   <div class="chart-grid">
     <div class="card chart-card wide">

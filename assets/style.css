@@ -14,6 +14,7 @@
   --accent-2: #1baf7a;    /* series 2: aqua */
   --accent-3: #eda100;    /* series 3: yellow */
   --accent-4: #4a3aa7;    /* series 5: violet */
+  --accent-5: #eb6834;    /* series 8: orange */
   --pos: #2a78d6;         /* diverging: positive pole */
   --neg: #e34948;         /* diverging: negative pole */
   --long: #006300;
@@ -35,6 +36,7 @@
     --accent-2: #199e70;
     --accent-3: #c98500;
     --accent-4: #9085e9;
+    --accent-5: #d95926;
     --pos: #3987e5;
     --neg: #e66767;
     --long: #0ca30c;
@@ -171,6 +173,10 @@ main { max-width: 1200px; margin: 0 auto; padding: 24px 32px 48px; }
 .data-table td.neg { color: var(--short); }
 .long-label { color: var(--long); }
 .short-label { color: var(--short); }
+
+.table-note { margin: 0 0 12px; font-size: 12.5px; color: var(--ink-2); }
+.data-table td.muted-cell { color: var(--muted); }
+.data-table sup { font-size: 0.7em; color: var(--accent); font-weight: 700; }
 
 .corr-table th, .corr-table td { text-align: center; }
 .corr-table td:first-child, .corr-table th:first-child { text-align: left; font-weight: 600; }
