@@ -16,13 +16,14 @@
     </div>
     <div class="header-meta">
       <div>Latest market data <strong id="meta-latest-date">2026-07-22</strong></div>
-      <div>Site generated <span id="meta-generated">2026-07-23 14:26:25</span></div>
+      <div>Site generated <span id="meta-generated">2026-07-24 15:06:57</span></div>
     </div>
   </div>
   <nav class="tabs" role="tablist">
     <button class="tab active" data-tab="ch3" role="tab">CH-3</button>
     <button class="tab" data-tab="ch4" role="tab">CH-4</button>
     <button class="tab" data-tab="eight" role="tab">Eight-Factor</button>
+    <button class="tab" data-tab="evolution" role="tab">Factor Evolution</button>
     <button class="tab" data-tab="longonly" role="tab">Long-Only Live</button>
   </nav>
 </header>
@@ -329,6 +330,36 @@
 
 </section>
 
+
+<section class="tab-panel" id="panel-evolution">
+  <div class="card intro-card">
+    <h2>Factor Risk Evolution — rolling CAPM</h2>
+    <p>Each factor run through a <strong>36-month rolling CAPM</strong> (<code>factor = α + β·MKT + ε</code>) across 2000–2025, to see whether its alpha is turning into a market-risk premium. <strong>How to read it:</strong> if <strong>α trends down toward zero while |β| trends up</strong>, the factor's return is converting from alpha into compensation for market risk. If <strong>α fades but β stays near zero</strong>, the alpha is simply decaying (arbitraged away or regime change), not becoming market risk. Rising volatility / drawdown with a falling Sharpe signals the premium is getting riskier (crowding). Because these are market-neutral long-short factors, β is small by construction — the dashed line adds each extra factor's rolling alpha versus CH-4, a more sensitive check of whether it is being explained away by the other factors.</p>
+  </div>
+  <div class="card">
+    <label class="evo-picker">Factor:
+      <select id="evo-factor"></select>
+    </label>
+  </div>
+  <div class="chart-grid">
+    <div class="card chart-card">
+      <h4>Rolling α <span class="hint">annualized; solid = vs market (CAPM), dashed = vs CH-4</span></h4>
+      <div class="chart-box"><canvas id="evo-chart-alpha"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Rolling market β <span class="hint">|β| rising = picking up market risk</span></h4>
+      <div class="chart-box"><canvas id="evo-chart-beta"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Rolling Sharpe <span class="hint">annualized</span></h4>
+      <div class="chart-box"><canvas id="evo-chart-sharpe"></canvas></div>
+    </div>
+    <div class="card chart-card">
+      <h4>Rolling volatility <span class="hint">annualized</span></h4>
+      <div class="chart-box"><canvas id="evo-chart-vol"></canvas></div>
+    </div>
+  </div>
+</section>
 
 <section class="tab-panel" id="panel-longonly">
   <div class="card intro-card">

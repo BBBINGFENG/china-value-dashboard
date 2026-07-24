@@ -425,6 +425,68 @@
       ]));
   }
 
+  /* ---------- factor evolution ---------- */
+
+  let evoCharts = [];
+
+  function renderEvolution(factor) {
+    const re = DATA.risk_evolution;
+    if (!re || !re.series[factor]) return;
+    const s = re.series[factor];
+    evoCharts.forEach((c) => c.destroy());
+    evoCharts = [];
+
+    const zeroLine = { borderColor: css("--baseline"), borderWidth: 1, borderDash: [4, 4], pointRadius: 0 };
+
+    const mk = (canvasId, datasets, opts) => {
+      const elc = document.getElementById(canvasId);
+      if (!elc) return;
+      const ch = new Chart(elc, {
+        type: "line",
+        data: { labels: s.dates, datasets },
+        options: {
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { display: datasets.filter((d) => d.label).length > 1 } },
+          scales: {
+            x: { grid: { display: false }, ticks: { maxTicksLimit: 8, maxRotation: 0 } },
+            y: Object.assign({ grid: GRID, ticks: { maxTicksLimit: 6 } }, opts.y || {}),
+          },
+        },
+      });
+      evoCharts.push(ch);
+    };
+
+    // α: CAPM 实线 + CH-4 虚线（如有）
+    const alphaDs = [
+      Object.assign({ label: "α vs market", data: s.alpha }, lineStyle(css("--accent"))),
+    ];
+    if (s.alpha_ch4 && s.alpha_ch4.some((v) => v !== null)) {
+      alphaDs.push(Object.assign(
+        { label: "α vs CH-4", data: s.alpha_ch4, borderDash: [5, 4] },
+        lineStyle(css("--accent-3"))
+      ));
+    }
+    mk("evo-chart-alpha", alphaDs, { y: { ticks: { callback: (v) => v + "%" } } });
+    mk("evo-chart-beta", [Object.assign({ label: "β", data: s.beta }, lineStyle(css("--accent-4")))], {});
+    mk("evo-chart-sharpe", [Object.assign({ label: "Sharpe", data: s.sharpe }, lineStyle(css("--accent-2")))], {});
+    mk("evo-chart-vol", [Object.assign({ label: "Vol", data: s.vol }, lineStyle(css("--accent-5")))],
+      { y: { ticks: { callback: (v) => v + "%" } } });
+  }
+
+  function initEvolution() {
+    const re = DATA.risk_evolution;
+    const sel = document.getElementById("evo-factor");
+    if (!re || !sel || !re.factors.length) return;
+    re.factors.forEach((f) => {
+      const o = document.createElement("option");
+      o.value = f; o.textContent = f;
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", () => renderEvolution(sel.value));
+    renderEvolution(re.factors[0]);
+  }
+
   /* ---------- tabs ---------- */
 
   document.querySelectorAll(".tab").forEach((btn) => {
@@ -440,6 +502,7 @@
 
   ["ch3", "ch4", "eight"].forEach((key) => renderModel(key, DATA.models[key]));
   renderLongOnly();
+  initEvolution();
 
   // 图表颜色在渲染时从 CSS 变量读取；主题切换后重载让图表换用对应主题色
   window.matchMedia("(prefers-color-scheme: dark)")
